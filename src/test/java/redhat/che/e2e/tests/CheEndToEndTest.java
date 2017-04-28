@@ -10,8 +10,10 @@
 */
 package redhat.che.e2e.tests;
 
+import java.io.File;
 import org.apache.log4j.Logger;
 import org.jboss.arquillian.drone.api.annotation.Drone;
+import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -19,6 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import redhat.che.e2e.tests.provider.CheWorkspaceProvider;
 import redhat.che.e2e.tests.resource.CheWorkspace;
@@ -33,6 +36,7 @@ import redhat.che.e2e.tests.selenium.ide.PushToRemoteWindow;
 import redhat.che.e2e.tests.selenium.ide.TestResultsView;
 import redhat.che.e2e.tests.service.CheWorkspaceService;
 
+import static org.jboss.arquillian.graphene.Graphene.waitAjax;
 import static redhat.che.e2e.tests.Constants.CHE_STARTER_URL;
 import static redhat.che.e2e.tests.Constants.CREATE_WORKSPACE_REQUEST_JSON;
 import static redhat.che.e2e.tests.Constants.KEYCLOAK_TOKEN;
@@ -56,6 +60,18 @@ public class CheEndToEndTest {
 
     @FindBy(id = "gwt-debug-editorPartStack-contentPanel")
     private CodeEditorFragment codeEditor;
+
+    @FindBy(id = "gwt-debug-MenuItem/profileGroup-true")
+    private WebElement profileMenuItem;
+
+    @FindBy(id = "topmenu/Profile/Preferences")
+    private WebElement profilePereferencesMenuItem;
+
+    @FindByJQuery("div:contains('Preferences'):contains('Java Compiler'):last")
+    private PreferencesWindow preferencesWindow;
+
+    @FindByJQuery("div:contains('Host'):contains('Upload'):last")
+    private UploadPrivateSshForm uploadPrivateSshForm;
 
     private static CheWorkspace workspace;
 
@@ -108,6 +124,8 @@ public class CheEndToEndTest {
         codeEditor.writeDependency();
         codeEditor.verifyAnnotationErrorIsPresent();
 
+        setProfilePreferences();
+
         logger.info("Commiting and pushing changes");
         explorer.getProject(PROJECT_NAME).select();
         boolean successfullCommit = commitChanges();
@@ -129,6 +147,18 @@ public class CheEndToEndTest {
         testsPopup.waitUntilExists(Popup.RUNNING_TESTS_TITLE, 20);
         testsPopup.waitWhileExists(Popup.RUNNING_TESTS_TITLE, 100);
         testsPopup.waitUntilExists(Popup.SUCCESSFULL_TESTS_TITLE, 10);
+    }
+
+    private void setProfilePreferences(){
+        waitAjax().until().element(profileMenuItem).is().visible();
+        profileMenuItem.click();
+        waitAjax().until().element(profilePereferencesMenuItem).is().visible();
+        profilePereferencesMenuItem.click();
+        preferencesWindow.openUploadPrivateKeyWindow();
+        File idRsa = new File("src/test/resources/id_rsa");
+        uploadPrivateSshForm.upload("github.com", idRsa);
+        preferencesWindow.writeCommiterInformation("dev-test-user", "mlabuda@redhat.com");
+        preferencesWindow.close();
     }
 
     private void checkTestResults() {
