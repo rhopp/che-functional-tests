@@ -10,16 +10,6 @@
 */
 package redhat.che.e2e.tests;
 
-import static redhat.che.e2e.tests.Constants.CHE_STARTER_URL;
-import static redhat.che.e2e.tests.Constants.CREATE_WORKSPACE_REQUEST_JSON;
-import static redhat.che.e2e.tests.Constants.KEYCLOAK_TOKEN;
-import static redhat.che.e2e.tests.Constants.OPENSHIFT_MASTER_URL;
-import static redhat.che.e2e.tests.Constants.OPENSHIFT_NAMESPACE;
-import static redhat.che.e2e.tests.Constants.OPENSHIFT_TOKEN;
-import static redhat.che.e2e.tests.Constants.PATH_TO_TEST_FILE;
-import static redhat.che.e2e.tests.Constants.PRESERVE_WORKSPACE_PROPERTY_NAME;
-import static redhat.che.e2e.tests.Constants.PROJECT_NAME;
-
 import org.apache.log4j.Logger;
 import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.junit.Arquillian;
@@ -29,7 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
-
+import org.openqa.selenium.support.FindBy;
 import redhat.che.e2e.tests.provider.CheWorkspaceProvider;
 import redhat.che.e2e.tests.resource.CheWorkspace;
 import redhat.che.e2e.tests.resource.CheWorkspaceStatus;
@@ -43,6 +33,16 @@ import redhat.che.e2e.tests.selenium.ide.PushToRemoteWindow;
 import redhat.che.e2e.tests.selenium.ide.TestResultsView;
 import redhat.che.e2e.tests.service.CheWorkspaceService;
 
+import static redhat.che.e2e.tests.Constants.CHE_STARTER_URL;
+import static redhat.che.e2e.tests.Constants.CREATE_WORKSPACE_REQUEST_JSON;
+import static redhat.che.e2e.tests.Constants.KEYCLOAK_TOKEN;
+import static redhat.che.e2e.tests.Constants.OPENSHIFT_MASTER_URL;
+import static redhat.che.e2e.tests.Constants.OPENSHIFT_NAMESPACE;
+import static redhat.che.e2e.tests.Constants.OPENSHIFT_TOKEN;
+import static redhat.che.e2e.tests.Constants.PATH_TO_TEST_FILE;
+import static redhat.che.e2e.tests.Constants.PRESERVE_WORKSPACE_PROPERTY_NAME;
+import static redhat.che.e2e.tests.Constants.PROJECT_NAME;
+
 @RunWith(Arquillian.class)
 public class CheEndToEndTest {
 
@@ -50,6 +50,12 @@ public class CheEndToEndTest {
 
     @Drone
     private WebDriver driver;
+
+    @FindBy(id = "gwt-debug-projectTree")
+    private ProjectExplorer explorer;
+
+    @FindBy(id = "gwt-debug-editorPartStack-contentPanel")
+    private CodeEditorFragment codeEditor;
 
     private static CheWorkspace workspace;
 
@@ -98,10 +104,12 @@ public class CheEndToEndTest {
         runTest(PROJECT_NAME);
         checkTestResults();
 
-        // TODO here must go changes to source code, otherwise Assert few lines below fail
-        
+        explorer.openPomXml();
+        codeEditor.writeDependency();
+        codeEditor.verifyAnnotationErrorIsPresent();
+
         logger.info("Commiting and pushing changes");
-        new ProjectExplorer(driver).getProject(PROJECT_NAME).select();
+        explorer.getProject(PROJECT_NAME).select();
         boolean successfullCommit = commitChanges();
         Assert.assertTrue("Changes were not successfully added to index. Either there is "
                 + "nothing to add to index or it is broken.", successfullCommit);
@@ -109,7 +117,6 @@ public class CheEndToEndTest {
     }
 
     private void runTest(String projectName) {
-        ProjectExplorer explorer = new ProjectExplorer(driver);
         Project project = explorer.getProject(PROJECT_NAME);
         project.select();
         ProjectItem testClassItem = project.getProjectItem(PATH_TO_TEST_FILE);
