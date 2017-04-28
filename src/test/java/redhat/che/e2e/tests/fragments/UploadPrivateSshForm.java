@@ -1,4 +1,4 @@
-package redhat.che.e2e.tests;
+package redhat.che.e2e.tests.fragments;
 
 import java.io.File;
 import java.util.List;

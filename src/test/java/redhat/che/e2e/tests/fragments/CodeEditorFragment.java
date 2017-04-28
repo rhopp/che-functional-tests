@@ -1,4 +1,4 @@
-package redhat.che.e2e.tests;
+package redhat.che.e2e.tests.fragments;
 
 import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.graphene.findby.FindByJQuery;
