@@ -10,13 +10,9 @@
 */
 package redhat.che.e2e.tests.selenium.ide;
 
-import org.jboss.arquillian.drone.api.annotation.Drone;
-import org.jboss.arquillian.graphene.Graphene;
-import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -27,32 +23,24 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 public class ProjectExplorer {
 
-	@Drone
-	private WebDriver driver;
+	private static final String PROJECT_EXPLORER_TREE_ID = "gwt-debug-projectTree";
 
-	@FindByJQuery("div:contains('pom.xml'):last")
-	private WebElement pomXmlItem;
-
-    private static final String PROJECT_EXPLORER_TREE_ID = "gwt-debug-projectTree";
-    
 	public static final String REFRESH_BUTTON_ID = "gwt-debug-refreshSelectedPath";
 
 	public static final String CONTEXT_MENU_ID = "gwt-debug-contextMenu/newGroup";
 
-	public Project getProject(String name) {
-	    String locator = String.format("//div[@id='%s']//div[@name='%s']", PROJECT_EXPLORER_TREE_ID, name);
-	    new WebDriverWait(driver, Timeouts.REDRAW)
-            .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
-	    
-	    WebElement project = driver.findElement(By.xpath(locator));
-	    return new Project(driver, project);
+	private WebDriver driver;
+
+	public ProjectExplorer(WebDriver driver) {
+		this.driver = driver;
 	}
 
-	/**
-	 * Opens pom.xml file
-	 */
-	public void openPomXml() {
-		Graphene.waitModel().until().element(pomXmlItem).is().visible();
-		new Actions(driver).doubleClick(pomXmlItem).perform();
+	public Project getProject(String name) {
+		String locator = String.format("//div[@id='%s']//div[@name='%s']", PROJECT_EXPLORER_TREE_ID, name);
+		new WebDriverWait(driver, Timeouts.REDRAW)
+			.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
+
+		WebElement project = driver.findElement(By.xpath(locator));
+		return new Project(driver, project);
 	}
 }

@@ -8,6 +8,9 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.jboss.arquillian.graphene.Graphene.waitAjax;
 
+/**
+ * jquery = "div:contains('Host'):contains('Upload'):last"
+ */
 public class UploadPrivateSshForm {
 
     @Root

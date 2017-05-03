@@ -6,6 +6,9 @@ import org.openqa.selenium.support.FindBy;
 
 import static org.jboss.arquillian.graphene.Graphene.waitAjax;
 
+/**
+ * jquery = "div:contains('Preferences'):contains('Java Compiler'):last"
+ */
 public class PreferencesWindow {
 
     @Root
@@ -41,16 +44,15 @@ public class PreferencesWindow {
         storeChangesButton.click();
     }
 
+    public void close(){
+        closeButton.click();
+        waitAjax().until().element(preferencesWindowElement).is().not().visible();
+    }
 
     public void openUploadPrivateKeyWindow() {
         waitAjax().until().element(sshVcsItem).is().visible();
         sshVcsItem.click();
         waitAjax().until().element(sshKeyUploadButton).is().visible();
         sshKeyUploadButton.click();
-    }
-
-    public void close(){
-        closeButton.click();
-        waitAjax().until().element(preferencesWindowElement).is().not().visible();
     }
 }

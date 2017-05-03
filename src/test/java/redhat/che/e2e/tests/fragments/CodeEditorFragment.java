@@ -7,9 +7,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.jboss.arquillian.graphene.Graphene.waitAjax;
+import static org.jboss.arquillian.graphene.Graphene.waitGui;
 
+/**
+ * id = "gwt-debug-editorPartStack-contentPanel"
+ */
 public class CodeEditorFragment {
 
     @Root
@@ -28,25 +31,31 @@ public class CodeEditorFragment {
             + "<artifactId>logback-core</artifactId>\n"
             + "<version>1.1.10</version>";
 
+    @FindByJQuery("span:last")
+    private WebElement lastSpan;
+
     @Drone
     private WebDriver browser;
 
-    public void writeDependency() {
-        waitAjax().withTimeout(5, SECONDS).until().element(emptyElementAfterVertxDep).is().present();
-        Actions actions = new Actions(browser);
-        actions.moveToElement(emptyElementAfterVertxDep);
-        actions.click();
-        actions.sendKeys(dependencyToAdd);
-        actions.build().perform();
+    public void writeDependencyIntoPom() {
+        writeIntoElement(emptyElementAfterVertxDep, dependencyToAdd);
     }
 
     public void verifyAnnotationErrorIsPresent(){
-        waitAjax()
-            .withTimeout(10, SECONDS)
+        waitGui()
             .withMessage("The annotation error should be visible")
             .until()
             .element(annotationError)
             .is()
             .present();
+    }
+
+    private void writeIntoElement(WebElement element, String text) {
+        waitAjax().until().element(element).is().visible();
+        new Actions(browser).moveToElement(element).click().sendKeys(text).perform();
+    }
+
+    public void writeIntoTextViewContent(String text) {
+        writeIntoElement(lastSpan, text);
     }
 }
