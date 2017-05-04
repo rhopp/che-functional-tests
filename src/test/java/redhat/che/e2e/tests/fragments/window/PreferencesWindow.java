@@ -1,4 +1,4 @@
-package redhat.che.e2e.tests.fragments;
+package redhat.che.e2e.tests.fragments.window;
 
 import org.jboss.arquillian.graphene.fragment.Root;
 import org.openqa.selenium.WebElement;
@@ -39,7 +39,9 @@ public class PreferencesWindow {
         waitAjax().until().element(gitCommiterItem).is().visible();
         gitCommiterItem.click();
         waitAjax().until().element(gitCommiterNameInput).is().visible();
+        gitCommiterNameInput.clear();
         gitCommiterNameInput.sendKeys(name);
+        gitCommiterEmailInput.clear();
         gitCommiterEmailInput.sendKeys(email);
         storeChangesButton.click();
     }

@@ -8,7 +8,7 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/
-package redhat.che.e2e.tests;
+package redhat.che.e2e.tests.utils;
 
 public class Constants {
 	// Properties

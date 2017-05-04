@@ -1,4 +1,4 @@
-package redhat.che.e2e.tests.fragments;
+package redhat.che.e2e.tests.fragments.window;
 
 import java.io.File;
 import java.util.List;
@@ -11,7 +11,7 @@ import static org.jboss.arquillian.graphene.Graphene.waitAjax;
 /**
  * jquery = "div:contains('Host'):contains('Upload'):last"
  */
-public class UploadPrivateSshForm {
+public class UploadPrivateSshFormWindow {
 
     @Root
     private WebElement formRootElement;

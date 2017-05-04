@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import static org.jboss.arquillian.graphene.Graphene.waitGui;
+import static redhat.che.e2e.tests.utils.ActionUtils.click;
 
 /**
  * id = "gwt-debug-mainMenuPanel"
@@ -22,15 +22,10 @@ public class MainMenuPanel {
     private WebElement gitItem;
 
     public void clickProfile(){
-        click(profileItem);
+        click(driver, profileItem);
     }
 
     public void clickGit(){
-        click(gitItem);
-    }
-
-    private void click(WebElement element){
-        waitGui().until().element(element).is().visible();
-        element.click();
+        click(driver, gitItem);
     }
 }

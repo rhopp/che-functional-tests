@@ -5,10 +5,9 @@ import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.jboss.arquillian.graphene.fragment.Root;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 
-import static org.jboss.arquillian.graphene.Graphene.waitAjax;
 import static org.jboss.arquillian.graphene.Graphene.waitGui;
+import static redhat.che.e2e.tests.utils.ActionUtils.writeIntoElement;
 
 /**
  * id = "gwt-debug-editorPartStack-contentPanel"
@@ -38,7 +37,7 @@ public class CodeEditorFragment {
     private WebDriver browser;
 
     public void writeDependencyIntoPom() {
-        writeIntoElement(emptyElementAfterVertxDep, dependencyToAdd);
+        writeIntoElement(browser, emptyElementAfterVertxDep, dependencyToAdd);
     }
 
     public void verifyAnnotationErrorIsPresent(){
@@ -50,12 +49,7 @@ public class CodeEditorFragment {
             .present();
     }
 
-    private void writeIntoElement(WebElement element, String text) {
-        waitAjax().until().element(element).is().visible();
-        new Actions(browser).moveToElement(element).click().sendKeys(text).perform();
-    }
-
     public void writeIntoTextViewContent(String text) {
-        writeIntoElement(lastSpan, text);
+        writeIntoElement(browser, lastSpan, text);
     }
 }

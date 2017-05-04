@@ -1,8 +1,11 @@
 package redhat.che.e2e.tests.fragments;
 
+import com.google.common.base.Function;
 import org.assertj.core.api.Assertions;
+import org.jboss.arquillian.graphene.findby.FindByJQuery;
+import org.jboss.arquillian.graphene.fragment.Root;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
@@ -11,11 +14,40 @@ import static org.jboss.arquillian.graphene.Graphene.waitModel;
  */
 public class BottomInfoPanel {
 
-    @FindBy(id = "gwt-debug-consolePart")
+    @Root
+    private WebElement rootElement;
+
+    @FindByJQuery("div:visible > #gwt-debug-consolePart")
     private WebElement consolePart;
 
-    public void verifyConsolePartContains(String text){
+    @FindByJQuery("#gwt-debug-multiSplitPanel-tabsPanel > div[focused]")
+    private WebElement focusedTab;
+
+    public void assertThatConsolePartContains(String text){
         waitModel().until().element(consolePart).is().visible();
         Assertions.assertThat(consolePart.getText()).contains(text);
+    }
+
+    public void waitUntilConsolePartContains(String text){
+        waitModel().until().element(consolePart).is().visible();
+        waitModel().until((Function<WebDriver, Boolean>) webDriver -> {
+            System.out.println(consolePart.getText());
+            return  consolePart.getText().contains(text);});
+    }
+
+    public void waitUntilFocusedTabHasName(String tabName) {
+        waitModel().until().element(consolePart).is().visible();
+        waitModel().until((Function<WebDriver, Boolean>) webDriver -> focusedTab.getText().equals(tabName));
+    }
+
+    public class TabNames {
+        public static final String TAB_GIT_ADD_TO_INDEX = "Git add to index";
+        public static final String TAB_GIT_COMMIT = "Git commit";
+        public static final String TAB_GIT_PUSH = "Git push";
+    }
+
+    public class FixedConsoleText {
+        public static final String GIT_ADDED_TO_INDEX_TEXT = "Git index updated";
+        public static final String GIT_COMMITED_WITH_REVISION = "Committed with revision";
     }
 }
