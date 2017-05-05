@@ -10,19 +10,16 @@
 */
 package com.redhat.arquillian.che.service;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
-
-import okhttp3.Response;
 import com.redhat.arquillian.che.resource.CheWorkspace;
 import com.redhat.arquillian.che.resource.CheWorkspaceStatus;
 import com.redhat.arquillian.che.rest.RequestType;
 import com.redhat.arquillian.che.rest.RestClient;
+import java.io.IOException;
+import java.util.List;
+import okhttp3.Response;
+import org.apache.log4j.Logger;
 
 public class CheWorkspaceService {
 
@@ -42,7 +39,8 @@ public class CheWorkspaceService {
 			}
 		}
 		if (responseString == null) {
-			throw new RuntimeException("Something went wrong and response is empty");
+			throw new RuntimeException(
+				"Something went wrong and response is empty. The message contains: " + response.message());
 		}
 		return Configuration.defaultConfiguration().jsonProvider().parse(responseString);
 	}
@@ -97,9 +95,9 @@ public class CheWorkspaceService {
 	 * @param workspace
 	 *            workspace to start
 	 */
-	public static void startWorkspace(CheWorkspace workspace) {
+	public static void startWorkspace(CheWorkspace workspace, String authorizationToken) {
 		logger.info("Starting " + workspace);
-		operateWorkspaceState(workspace, RequestType.POST, CheWorkspaceStatus.RUNNING.getStatus());
+		operateWorkspaceState(workspace, RequestType.POST, CheWorkspaceStatus.RUNNING.getStatus(), authorizationToken);
 	}
 
 	/**
@@ -108,9 +106,9 @@ public class CheWorkspaceService {
 	 * @param workspace
 	 *            workspace to stop
 	 */
-	public static void stopWorkspace(CheWorkspace workspace) {
+	public static void stopWorkspace(CheWorkspace workspace, String authorizationToken) {
 		logger.info("Stopping " + workspace);
-		operateWorkspaceState(workspace, RequestType.DELETE, CheWorkspaceStatus.STOPPED.getStatus());
+		operateWorkspaceState(workspace, RequestType.DELETE, CheWorkspaceStatus.STOPPED.getStatus(), authorizationToken);
 	}
 
 	/**
@@ -120,35 +118,37 @@ public class CheWorkspaceService {
 	 *            workspace to get its status
 	 * @return status of workspace
 	 */
-	public static String getWorkspaceStatus(CheWorkspace workspace) {
+	public static String getWorkspaceStatus(CheWorkspace workspace, String authorizationToken) {
 		logger.info("Getting status of " + workspace);
 		RestClient client = new RestClient(workspace.getSelfLink());
-		String status = getWorkspaceStatus(client, workspace);
+		String status = getWorkspaceStatus(client, workspace, authorizationToken);
 		client.close();
 		return status;
 
 	}
 
-	private static String getWorkspaceStatus(RestClient client, CheWorkspace workspace) {
-		Response response = client.sentRequest(null, RequestType.GET);
+	private static String getWorkspaceStatus(RestClient client, CheWorkspace workspace, String authorizationToken) {
+		Response response = client.sentRequest(null, RequestType.GET, null, authorizationToken);
 		Object document = getDocumentFromResponse(response);
 		response.close();
 		return getWorkspaceStatus(document);
 	}
 
-	private static void operateWorkspaceState(CheWorkspace workspace, RequestType requestType, String resultState) {
+	private static void operateWorkspaceState(CheWorkspace workspace, RequestType requestType, String resultState,
+		String authorizationToken) {
 		RestClient client = new RestClient(workspace.getRuntimeLink());
-		client.sentRequest(null, requestType).close();
+		client.sentRequest(null, requestType, null, authorizationToken).close();
 		client.close();
 
-		waitUntilWorkspaceGetsToState(workspace, resultState);
+		waitUntilWorkspaceGetsToState(workspace, resultState, authorizationToken);
 	}
 
-	public static void waitUntilWorkspaceGetsToState(CheWorkspace workspace, String resultState) {
+	public static void waitUntilWorkspaceGetsToState(CheWorkspace workspace, String resultState,
+		String authorizationToken) {
 		RestClient client = new RestClient(workspace.getSelfLink());
 		int counter = 0;
 		int maxCount = Math.round(WAIT_TIME / (SLEEP_TIME_TICK / 1000));
-		String currentState = getWorkspaceStatus(client, workspace);
+		String currentState = getWorkspaceStatus(client, workspace, authorizationToken);
 		logger.info("Waiting for " + WAIT_TIME + " seconds until workspace gets from state " + currentState
 				+ " to state " + resultState);
 		while (counter < maxCount && !resultState.equals(currentState)) {
@@ -157,7 +157,7 @@ public class CheWorkspaceService {
 				Thread.sleep(SLEEP_TIME_TICK);
 			} catch (InterruptedException e) {
 			}
-			currentState = getWorkspaceStatus(client, workspace);
+			currentState = getWorkspaceStatus(client, workspace, authorizationToken);
 		}
 
 		if (counter == maxCount && !resultState.equals(currentState)) {

@@ -46,16 +46,22 @@ public class CheWorkspaceManager {
                 CheWorkspaceProvider.createCheWorkspaceOSO(CHE_STARTER_URL, OPENSHIFT_MASTER_URL, OPENSHIFT_TOKEN,
                     null, OPENSHIFT_NAMESPACE);
         } else {
-            logger.info("Creating Che workspace via Che-starter Keycloak endpont");
+            logger.info("Creating Che workspace via Che-starter Keycloak endpoint");
             workspace = CheWorkspaceProvider.createCheWorkspace(CHE_STARTER_URL, OPENSHIFT_MASTER_URL, KEYCLOAK_TOKEN,
                 null, OPENSHIFT_NAMESPACE);
         }
         logger.info("Workspace successfully created.");
 
         logger.info("Waiting until workspace starts");
-        CheWorkspaceService.waitUntilWorkspaceGetsToState(workspace, CheWorkspaceStatus.RUNNING.getStatus());
+        String authorizationToken = getAuthorizationToken();
+        CheWorkspaceService.waitUntilWorkspaceGetsToState(workspace, CheWorkspaceStatus.RUNNING.getStatus(),
+            authorizationToken);
 
         return workspace;
+    }
+
+    private String getAuthorizationToken() {
+        return (KEYCLOAK_TOKEN != null) ? KEYCLOAK_TOKEN : OPENSHIFT_TOKEN;
     }
 
     private void checkRunParams() {
@@ -85,10 +91,12 @@ public class CheWorkspaceManager {
             return;
         }
         CheWorkspace workspace = cheWorkspaceInstanceProducer.get();
+        String authorizationToken = getAuthorizationToken();
         if (workspace != null && !shouldNotDeleteWorkspace()) {
-            if (CheWorkspaceService.getWorkspaceStatus(workspace).equals(CheWorkspaceStatus.RUNNING.getStatus())) {
+            String workspaceStatus = CheWorkspaceService.getWorkspaceStatus(workspace, authorizationToken);
+            if (workspaceStatus.equals(CheWorkspaceStatus.RUNNING.getStatus())) {
                 logger.info("Stopping workspace");
-                CheWorkspaceService.stopWorkspace(workspace);
+                CheWorkspaceService.stopWorkspace(workspace, authorizationToken);
             }
             logger.info("Deleting workspace");
             CheWorkspaceService.deleteWorkspace(workspace);
