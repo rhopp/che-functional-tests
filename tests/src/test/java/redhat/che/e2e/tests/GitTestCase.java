@@ -64,9 +64,9 @@ public class GitTestCase extends AbstractCheEndToEndTest {
         mainMenuPanel.clickProfile();
         profileTopMenu.openPreferences();
         preferencesWindow.writeCommiterInformation("dev-test-user", "mlabuda@redhat.com");
-        preferencesWindow.openUploadPrivateKeyWindow();
+        //preferencesWindow.openUploadPrivateKeyWindow();
         File idRsa = new File("src/test/resources/id_rsa");
-        uploadPrivateSshForm.upload("github.com", idRsa);
+        //uploadPrivateSshForm.upload("github.com", idRsa);
         preferencesWindow.close();
     }
 

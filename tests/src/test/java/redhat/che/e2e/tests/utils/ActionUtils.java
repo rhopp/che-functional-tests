@@ -13,7 +13,7 @@ import static org.jboss.arquillian.graphene.Graphene.waitGui;
 public class ActionUtils {
 
     public static void writeIntoElement(WebDriver driver, WebElement element, String text) {
-        waitAjax().until().element(element).is().visible();
+        waitAjax().until().element(element).is().present();
         new Actions(driver).moveToElement(element).click().sendKeys(text).perform();
     }
 

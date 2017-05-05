@@ -30,9 +30,7 @@ public class BottomInfoPanel {
 
     public void waitUntilConsolePartContains(String text){
         waitModel().until().element(consolePart).is().visible();
-        waitModel().until((Function<WebDriver, Boolean>) webDriver -> {
-            System.out.println(consolePart.getText());
-            return  consolePart.getText().contains(text);});
+        waitModel().until((Function<WebDriver, Boolean>) webDriver -> consolePart.getText().contains(text));
     }
 
     public void waitUntilFocusedTabHasName(String tabName) {

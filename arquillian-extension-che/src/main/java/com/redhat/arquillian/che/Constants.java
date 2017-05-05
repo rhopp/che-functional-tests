@@ -18,23 +18,16 @@ public class Constants {
     public static final String OPENSHIFT_TOKEN_PROPERTY_NAME = "openShiftToken";
     public static final String PRESERVE_WORKSPACE_PROPERTY_NAME = "preserveWorkspace";
     public static final String OPENSHIFT_NAMESPACE_PROPERTY_NAME = "openShiftNamespace";
+    public static final String CHE_WORKSPACE_URL_PROPERTY_NAME = "cheWorkspaceUrl";
 
     // Current values
-    public static final String CHE_STARTER_URL = getProperty(CHE_STARTER_PROPERTY_NAME, null);
-    public static final String OPENSHIFT_MASTER_URL = getProperty(OPENSHIFT_MASTER_URL_PROPERTY_NAME, null);
-    public static final String KEYCLOAK_TOKEN = getProperty(KEYCLOAK_TOKEN_PROPERTY_NAME, null);
-    public static final String OPENSHIFT_TOKEN = getProperty(OPENSHIFT_TOKEN_PROPERTY_NAME, null);
-    public static final String OPENSHIFT_NAMESPACE = getProperty(OPENSHIFT_NAMESPACE_PROPERTY_NAME, "eclipse-che");
+    public static final String CHE_STARTER_URL = System.getProperty(CHE_STARTER_PROPERTY_NAME);
+    public static final String OPENSHIFT_MASTER_URL = System.getProperty(OPENSHIFT_MASTER_URL_PROPERTY_NAME);
+    public static final String KEYCLOAK_TOKEN = System.getProperty(KEYCLOAK_TOKEN_PROPERTY_NAME);
+    public static final String OPENSHIFT_TOKEN = System.getProperty(OPENSHIFT_TOKEN_PROPERTY_NAME);
+    public static final String OPENSHIFT_NAMESPACE = System.getProperty(OPENSHIFT_NAMESPACE_PROPERTY_NAME, "eclipse-che");
+    public static final String CHE_WORKSPACE_URL = System.getProperty(CHE_WORKSPACE_URL_PROPERTY_NAME);
 
     // Path to resources
     public static final String CREATE_WORKSPACE_REQUEST_JSON = "create-workspace-request.json";
-
-    private static String getProperty(String propertyName, String defaultValue) {
-        String property = System.getProperty(propertyName);
-        if (property == null || property.isEmpty()) {
-            return defaultValue;
-        } else {
-            return property;
-        }
-    }
 }

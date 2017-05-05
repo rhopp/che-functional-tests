@@ -22,6 +22,8 @@ import redhat.che.e2e.tests.fragments.CodeEditorFragment;
 import redhat.che.e2e.tests.fragments.ProjectTree;
 
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
+import static redhat.che.e2e.tests.utils.Constants.OSIO_PASSWORD;
+import static redhat.che.e2e.tests.utils.Constants.OSIO_USERNAME;
 import static redhat.che.e2e.tests.utils.Constants.PROJECT_NAME;
 
 @RunWith(Arquillian.class)
@@ -30,18 +32,43 @@ public abstract class AbstractCheEndToEndTest {
     @FindByJQuery("#gwt-debug-projectTree > div:contains('" + PROJECT_NAME + "'):first")
     protected ProjectTree projectTree;
 
-    @FindBy(id = "gwt-debug-editorPartStack-contentPanel")
+    @FindBy(id = "gwt-debug-editorMultiPartStack-contentPanel")
     protected CodeEditorFragment codeEditor;
 
     @FindByJQuery("#gwt-debug-popup-container:contains('Workspace is running')")
     private WebElement workspaceIsRunningPopup;
+
+    @FindByJQuery("#username, #gwt-debug-popup-container:contains('Workspace is running')")
+    private WebElement loginPageOrworkspaceIsRunningPopup;
+
+    @FindBy(id = "username")
+    private WebElement usernameField;
+
+    @FindBy(id = "password")
+    private WebElement passwordField;
+
+    @FindBy(id = "kc-login")
+    private WebElement loginButton;
 
     @ArquillianResource
     private static CheWorkspace workspace;
 
     protected void openBrowser(WebDriver browser) {
         browser.get(workspace.getIdeLink());
-        waitModel().until().element(workspaceIsRunningPopup).is().visible();
+        waitModel().until().element(loginPageOrworkspaceIsRunningPopup).is().visible();
+        if ("username".equals(loginPageOrworkspaceIsRunningPopup.getAttribute("id"))) {
+            login();
+        }
         waitModel().until().element(workspaceIsRunningPopup).is().not().visible();
+    }
+
+    private void login() {
+        usernameField.sendKeys(OSIO_USERNAME);
+        passwordField.sendKeys(OSIO_PASSWORD);
+        loginButton.click();
+        //ByJQuery collapse = ByJQuery.selector("div:has(path[id='collapse-expand'])");
+        //waitModel().withTimeout(40, SECONDS).until().element(collapse).is().visible();
+        //driver.findElement(collapse).click();
+
     }
 }

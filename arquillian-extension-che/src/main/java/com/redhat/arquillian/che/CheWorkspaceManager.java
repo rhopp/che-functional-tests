@@ -13,15 +13,16 @@ import org.jboss.arquillian.test.spi.event.suite.AfterSuite;
 import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
 
 import static com.redhat.arquillian.che.Constants.CHE_STARTER_URL;
+import static com.redhat.arquillian.che.Constants.CHE_WORKSPACE_URL;
 import static com.redhat.arquillian.che.Constants.KEYCLOAK_TOKEN;
 import static com.redhat.arquillian.che.Constants.OPENSHIFT_MASTER_URL;
 import static com.redhat.arquillian.che.Constants.OPENSHIFT_NAMESPACE;
 import static com.redhat.arquillian.che.Constants.OPENSHIFT_TOKEN;
 import static com.redhat.arquillian.che.Constants.PRESERVE_WORKSPACE_PROPERTY_NAME;
 
-public class CheLifecycleManager {
+public class CheWorkspaceManager {
 
-    private static final Logger logger = Logger.getLogger(CheLifecycleManager.class);
+    private static final Logger logger = Logger.getLogger(CheWorkspaceManager.class);
 
     @Inject
     @ApplicationScoped
@@ -30,6 +31,14 @@ public class CheLifecycleManager {
     public void setupWorkspace(@Observes BeforeSuite event) {
         checkRunParams();
 
+        if (CHE_WORKSPACE_URL != null) {
+            cheWorkspaceInstanceProducer.set(new CheWorkspace(CHE_WORKSPACE_URL, null, null));
+        }else {
+            cheWorkspaceInstanceProducer.set(createWorkspace());
+        }
+    }
+
+    private CheWorkspace createWorkspace() {
         CheWorkspace workspace;
         if (KEYCLOAK_TOKEN == null) {
             logger.info("Creating Che workspace via Che-starter OpenShift endpoint");
@@ -46,11 +55,14 @@ public class CheLifecycleManager {
         logger.info("Waiting until workspace starts");
         CheWorkspaceService.waitUntilWorkspaceGetsToState(workspace, CheWorkspaceStatus.RUNNING.getStatus());
 
-        cheWorkspaceInstanceProducer.set(workspace);
+        return workspace;
     }
 
-    public void checkRunParams() {
+    private void checkRunParams() {
         StringBuilder sb = new StringBuilder();
+        if (CHE_WORKSPACE_URL != null) {
+            return;
+        }
         if (CHE_STARTER_URL == null) {
             sb.append("Che starter URL cannot be null. Set property " + Constants.CHE_STARTER_PROPERTY_NAME
                 + " and rerun tests\n");
@@ -69,6 +81,9 @@ public class CheLifecycleManager {
     }
 
     public void cleanUp(@Observes AfterSuite event) {
+        if (CHE_WORKSPACE_URL != null){
+            return;
+        }
         CheWorkspace workspace = cheWorkspaceInstanceProducer.get();
         if (workspace != null && !shouldNotDeleteWorkspace()) {
             if (CheWorkspaceService.getWorkspaceStatus(workspace).equals(CheWorkspaceStatus.RUNNING.getStatus())) {

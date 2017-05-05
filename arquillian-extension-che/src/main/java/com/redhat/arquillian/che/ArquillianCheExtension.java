@@ -7,7 +7,7 @@ public class ArquillianCheExtension implements LoadableExtension {
 
     @Override
     public void register(ExtensionBuilder extensionBuilder) {
-        extensionBuilder.observer(CheLifecycleManager.class);
+        extensionBuilder.observer(CheWorkspaceManager.class);
         extensionBuilder.service(ResourceProvider.class, CheWorkspaceProducer.class);
     }
 }
