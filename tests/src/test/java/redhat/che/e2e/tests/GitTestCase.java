@@ -55,12 +55,12 @@ public class GitTestCase extends AbstractCheEndToEndTest {
     @FindBy(id = "gwt-debug-git-remotes-push-window")
     private GitPushWindow gitPushWindow;
 
-
     @Test
     @InSequence(1)
     public void test_load_ssh_key_and_set_commiter_information(){
         // set commiter credentials
         openBrowser(driver);
+
         mainMenuPanel.clickProfile();
         profileTopMenu.openPreferences();
         preferencesWindow.writeCommiterInformation("dev-test-user", "mlabuda@redhat.com");
@@ -77,11 +77,12 @@ public class GitTestCase extends AbstractCheEndToEndTest {
 
         projectTree.expandProjectRoot();
         projectTree.openReadme();
-        codeEditor.writeIntoTextViewContent("\n changes added on: " + new Date());
+        editorPart.tabsPanel().waitUntilFocusedTabHasName("README.md");
+        editorPart.codeEditor().writeIntoTextViewContent("\n changes added on: " + new Date());
 
         mainMenuPanel.clickGit();
         gitPopupTopMenu.addToIndex();
-        bottomInfoPanel.waitUntilFocusedTabHasName(TAB_GIT_ADD_TO_INDEX);
+        bottomInfoPanel.tabsPanel().waitUntilFocusedTabHasName(TAB_GIT_ADD_TO_INDEX);
         bottomInfoPanel.waitUntilConsolePartContains(GIT_ADDED_TO_INDEX_TEXT);
     }
 
@@ -94,7 +95,7 @@ public class GitTestCase extends AbstractCheEndToEndTest {
         gitPopupTopMenu.commitSelected();
         commitToRepoWindow.addCommitMessage("changed README as part of a test that was run on: " + new Date());
         commitToRepoWindow.commit();
-        bottomInfoPanel.waitUntilFocusedTabHasName(TAB_GIT_COMMIT);
+        bottomInfoPanel.tabsPanel().waitUntilFocusedTabHasName(TAB_GIT_COMMIT);
         bottomInfoPanel.waitUntilConsolePartContains(GIT_COMMITED_WITH_REVISION);
     }
 

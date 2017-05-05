@@ -18,7 +18,7 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import redhat.che.e2e.tests.fragments.CodeEditorFragment;
+import redhat.che.e2e.tests.fragments.EditorPart;
 import redhat.che.e2e.tests.fragments.ProjectTree;
 
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
@@ -33,7 +33,7 @@ public abstract class AbstractCheEndToEndTest {
     protected ProjectTree projectTree;
 
     @FindBy(id = "gwt-debug-editorMultiPartStack-contentPanel")
-    protected CodeEditorFragment codeEditor;
+    protected EditorPart editorPart;
 
     @FindByJQuery("#gwt-debug-popup-container:contains('Workspace is running')")
     private WebElement workspaceIsRunningPopup;
@@ -58,6 +58,7 @@ public abstract class AbstractCheEndToEndTest {
         waitModel().until().element(loginPageOrworkspaceIsRunningPopup).is().visible();
         if ("username".equals(loginPageOrworkspaceIsRunningPopup.getAttribute("id"))) {
             login();
+            waitModel().until().element(loginPageOrworkspaceIsRunningPopup).is().visible();
         }
         waitModel().until().element(workspaceIsRunningPopup).is().not().visible();
     }
@@ -69,6 +70,5 @@ public abstract class AbstractCheEndToEndTest {
         //ByJQuery collapse = ByJQuery.selector("div:has(path[id='collapse-expand'])");
         //waitModel().withTimeout(40, SECONDS).until().element(collapse).is().visible();
         //driver.findElement(collapse).click();
-
     }
 }

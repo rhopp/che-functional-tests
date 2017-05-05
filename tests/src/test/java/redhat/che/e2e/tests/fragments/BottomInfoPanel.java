@@ -6,6 +6,7 @@ import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.jboss.arquillian.graphene.fragment.Root;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
@@ -20,8 +21,8 @@ public class BottomInfoPanel {
     @FindByJQuery("div:visible > #gwt-debug-consolePart")
     private WebElement consolePart;
 
-    @FindByJQuery("#gwt-debug-multiSplitPanel-tabsPanel > div[focused]")
-    private WebElement focusedTab;
+    @FindBy(id = "gwt-debug-multiSplitPanel-tabsPanel")
+    private TabsPanel tabsPanel;
 
     public void assertThatConsolePartContains(String text){
         waitModel().until().element(consolePart).is().visible();
@@ -33,9 +34,8 @@ public class BottomInfoPanel {
         waitModel().until((Function<WebDriver, Boolean>) webDriver -> consolePart.getText().contains(text));
     }
 
-    public void waitUntilFocusedTabHasName(String tabName) {
-        waitModel().until().element(consolePart).is().visible();
-        waitModel().until((Function<WebDriver, Boolean>) webDriver -> focusedTab.getText().equals(tabName));
+    public TabsPanel tabsPanel(){
+        return tabsPanel;
     }
 
     public class TabNames {
