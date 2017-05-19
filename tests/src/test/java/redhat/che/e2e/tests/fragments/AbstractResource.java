@@ -10,14 +10,12 @@
  ******************************************************************************/
 package redhat.che.e2e.tests.fragments;
 
-import static org.jboss.arquillian.graphene.Graphene.waitModel;
-
 import org.jboss.arquillian.graphene.findby.ByJQuery;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-import com.google.common.base.Predicate;
+import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 /**
  * Represents abstact resource in Project explorer.
@@ -53,7 +51,7 @@ public abstract class AbstractResource {
         if (!isExpanded()) {
             new Actions(getWebDriver()).doubleClick(getResourceElement().findElement(ByJQuery.selector("> div:first"))).build()
                     .perform();
-            waitModel().until((Predicate<WebDriver>) p -> expandedFolderStyle
+            waitModel().until(p -> expandedFolderStyle
                     .equals(getResourceElement().findElement(ByJQuery.selector("> div:last")).getAttribute("style")));
         }
     }
