@@ -1,10 +1,9 @@
 package com.redhat.arquillian.che.config;
 
-import com.redhat.arquillian.che.PropertySecurityAction;
-import com.redhat.arquillian.che.Validate;
+import com.redhat.arquillian.che.util.Validate;
 import java.util.Map;
 
-import static com.redhat.arquillian.che.Validate.isNotEmpty;
+import static com.redhat.arquillian.che.util.Validate.isNotEmpty;
 
 public class CheExtensionConfiguration {
 

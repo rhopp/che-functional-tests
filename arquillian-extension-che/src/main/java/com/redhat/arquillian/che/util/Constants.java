@@ -8,7 +8,7 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/
-package com.redhat.arquillian.che;
+package com.redhat.arquillian.che.util;
 
 public class Constants {
 

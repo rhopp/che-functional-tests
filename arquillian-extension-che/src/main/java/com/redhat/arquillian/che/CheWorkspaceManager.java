@@ -20,9 +20,9 @@ import org.jboss.arquillian.test.spi.event.suite.AfterSuite;
 import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
 import org.jboss.shrinkwrap.resolver.api.maven.embedded.EmbeddedMaven;
 
-import static com.redhat.arquillian.che.Validate.areAllEmpty;
-import static com.redhat.arquillian.che.Validate.isEmpty;
-import static com.redhat.arquillian.che.Validate.isNotEmpty;
+import static com.redhat.arquillian.che.util.Validate.areAllEmpty;
+import static com.redhat.arquillian.che.util.Validate.isEmpty;
+import static com.redhat.arquillian.che.util.Validate.isNotEmpty;
 
 public class CheWorkspaceManager {
 

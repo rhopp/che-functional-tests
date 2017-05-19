@@ -1,4 +1,4 @@
-package com.redhat.arquillian.che;
+package com.redhat.arquillian.che.util;
 
 import java.util.Arrays;
 

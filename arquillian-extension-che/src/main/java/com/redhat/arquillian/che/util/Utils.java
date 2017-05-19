@@ -8,7 +8,7 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
 */
-package com.redhat.arquillian.che;
+package com.redhat.arquillian.che.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,10 +21,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Utils {
-
-	private static String driverWinURL = "https://chromedriver.storage.googleapis.com/2.27/chromedriver_win32.zip";
-	private static String driverLinuxURL = "https://chromedriver.storage.googleapis.com/2.27/chromedriver_linux64.zip";
-	private static String driverMacURL = "https://chromedriver.storage.googleapis.com/2.27/chromedriver_mac64.zip";
 
 	/**
 	 * Gets text from a file.

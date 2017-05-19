@@ -10,8 +10,8 @@
 */
 package com.redhat.arquillian.che.provider;
 
-import com.redhat.arquillian.che.Constants;
-import com.redhat.arquillian.che.Utils;
+import com.redhat.arquillian.che.util.Constants;
+import com.redhat.arquillian.che.util.Utils;
 import com.redhat.arquillian.che.resource.CheWorkspace;
 import com.redhat.arquillian.che.rest.QueryParam;
 import com.redhat.arquillian.che.rest.RequestType;
@@ -20,7 +20,7 @@ import com.redhat.arquillian.che.service.CheWorkspaceService;
 import java.io.InputStream;
 import okhttp3.Response;
 
-import static com.redhat.arquillian.che.Constants.CREATE_WORKSPACE_REQUEST_JSON;
+import static com.redhat.arquillian.che.util.Constants.CREATE_WORKSPACE_REQUEST_JSON;
 
 public class CheWorkspaceProvider {
 

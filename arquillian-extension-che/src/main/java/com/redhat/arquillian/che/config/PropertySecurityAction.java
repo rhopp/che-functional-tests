@@ -1,15 +1,15 @@
-package com.redhat.arquillian.che;
+package com.redhat.arquillian.che.config;
 
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 
-public class PropertySecurityAction {
+class PropertySecurityAction {
 
     /**
      * Gets the system property indicated by the specified key.
      */
-    public static String getProperty(final String key) {
+    static String getProperty(final String key) {
         try {
             String value = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
                 public String run() {
@@ -45,7 +45,7 @@ public class PropertySecurityAction {
     /**
      * Sets the system property indicated by the specified key.
      */
-    public static String setProperty(final String key, final String value) {
+    static String setProperty(final String key, final String value) {
         try {
             String oldValue = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
                 public String run() {
