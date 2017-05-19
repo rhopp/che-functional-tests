@@ -37,6 +37,18 @@
       <artifactId>okhttp</artifactId>
       <version>3.6.0</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jgit</groupId>
+      <artifactId>org.eclipse.jgit</artifactId>
+      <version>4.7.0.201704051617-r</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-impl-maven-embedded</artifactId>
+      <version>3.0.0-beta-2</version>
+    </dependency>
   </dependencies>
 
 </project>
