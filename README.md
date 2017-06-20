@@ -1,5 +1,5 @@
 # Che end-to-end tests
-Che end-to-end tests verify capabilities of che-starter and Che IDE. 
+Che end-to-end tests verify capabilities of Che IDE. Earlier tests were more end-to-end focused (one big use case), now it is split into several test cases and it is concepted ore like functional tests.
 
 ## Prerequisites
 - Running Che server on an OpenShift with properly set up Che server. That means the Che server is running with configuration compatible with the runtime configuration of the running Che starter
