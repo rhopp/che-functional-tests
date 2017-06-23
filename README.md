@@ -6,7 +6,9 @@ Che functional tests verify capabilities of Che IDE. Earlier tests were more end
 - Che starter _(optional)_ - It is not necessary to run Che starter - if you don't specify any URL where Che starter is available, then it will be automatically cloned from GH and started. Otherwise Che starter located at your URL will be used
 
 ## Test execution
-Due to some changes to che starter, Tests can run only against a remote OpenShift instance which token (OpenShift token), can be accessed via REST call with keycloak token.
+Due to some changes to che-starter, tests can run only against a remote OpenShift instance. OpenShift token of an instance has to be obtainable via REST call against a Keycloak (with keycloak token). 
+
+If you still want to run tests locally, you would have to create a new workspace manually and run tests against the workspace.
 
 To run tests execute `mvn clean verify` with arguments listed below to run all tests.
 
