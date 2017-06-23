@@ -6,9 +6,10 @@ Che functional tests verify capabilities of Che IDE. Earlier tests were more end
 - Che starter _(optional)_ - It is not necessary to run Che starter - if you don't specify any URL where Che starter is available, then it will be automatically cloned from GH and started. Otherwise Che starter located at your URL will be used
 
 ## Test execution
-Tests can run locally against minishift or against a remote OpenShift instance. To run tests locally, for its successfull execution you have to modify your local Che to support Bayesian, because it won't work OOTB. To have Bayesian working locally, please set up local OpenShift instance to copy the remote instance where Bayesian is running. Otherwise, if Bayesian is not set up properly, _PomTestCase_ test class will fail.
+Due to some changes to che starter, Tests can run only against a remote OpenShift instance which token (OpenShift token), can be accessed via REST call with keycloak token.
 
 To run tests execute `mvn clean verify` with arguments listed below to run all tests.
+
 ### Execution arguments
 There are 2 ways how to run tests. Each of the following contains complete list of required and optional parameters.
 **Run tests with fresh new workspace**
