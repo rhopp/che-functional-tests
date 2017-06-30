@@ -48,4 +48,4 @@ All before-mentioned properties are possible to set using `arquillian.xml` file.
 ~~~
 
 ## Known bugs and troubleshooting
-- [Tests fail if Che server is idle](https://github.com/redhat-developer/che-functional-tests/issues/62) - if tests fails in che-selenium extension (WorkspaceManager - response issues), it is possible that Che server was idle. Rerun tests once Che server starts.
+- [Tests fail if Che server is idle](https://github.com/redhat-developer/che-functional-tests/issues/62) - if tests fail in che-selenium extension (response issues in WorkspaceManager), it could be caused by Che server idling. Rerun tests once Che server starts.
