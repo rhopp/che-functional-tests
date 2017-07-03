@@ -1,6 +1,7 @@
 #!/bin/bash
 set -x
 set -e
+set +o nounset
 
 # Prepare environment - git repo, credentials, token validation
 source prepare_environment.sh
