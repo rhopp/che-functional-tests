@@ -48,4 +48,6 @@ All before-mentioned properties are possible to set using `arquillian.xml` file.
 ~~~
 
 ## Known bugs and troubleshooting
-- [Tests fail if Che server is idle](https://github.com/redhat-developer/che-functional-tests/issues/62) - if tests fail in che-selenium extension (response issues in WorkspaceManager), it could be caused by Che server idling. Rerun tests once Che server starts.
+- _preserveWorkspace_ property does not work at the moment, it need some refactoring
+- tests using commands UI are broken, because commands UI has changed in underlying Che server and it requires tests adjustment
+- running tests on oldest Che server (pre 5.16 version) would not work because of changes in deployment template. It would work with slight modification of update tenant to use older template without modification of Che server tag
