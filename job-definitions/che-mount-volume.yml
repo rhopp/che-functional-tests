@@ -58,7 +58,7 @@
             branches:
                 - '*/master'
     triggers:
-        - timed: H/30 * * * *
+        - timed: H * * * *
     wrappers:
         - user-properties-wrapper
         - user-credentials-{cluster}-wrapper
