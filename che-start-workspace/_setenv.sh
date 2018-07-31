@@ -13,8 +13,7 @@
 #export AUTH_SERVER_URL=https://auth.openshift.io
 
 # Che server url.
-#export CHE_SERVER_URL=https://che.openshift.io
-export CHE_SERVER_URL=https://rhche.openshift.io
+export CHE_SERVER_URL=https://che.openshift.io
 
 # Locust SSH user. (Only for RUN_LOCALLY != true)
 #export SSH_USER=centos

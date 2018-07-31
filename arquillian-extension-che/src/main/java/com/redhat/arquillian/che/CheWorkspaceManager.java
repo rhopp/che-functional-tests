@@ -194,7 +194,7 @@ public class CheWorkspaceManager {
             props.setProperty(
                     "CHE_SERVER_URL",
                     configurationInstance.get().getCustomCheServerFullURL().isEmpty()
-                    ? "https://rhche." + configurationInstance.get().getOsioUrlPart()
+                    ? "https://che." + configurationInstance.get().getOsioUrlPart()
                     : configurationInstance.get().getCustomCheServerFullURL()
             );
             EmbeddedMaven

@@ -51,8 +51,7 @@
            description: Auth server machine address.
        - string:
            name: CHE_SERVER_URL
-           #default: https://che.openshift.io
-           default: https://rhche.openshift.io
+           default: https://che.openshift.io
            description: Che server machine address.
        - string:
            name: SSH_USER
