@@ -2,7 +2,7 @@
 These tests are intended to measure performance of the REST endpoints of creating/starting/stopping/deleting workspace. It serves as monitoring of service on daily basis.
 
 ## Environment
-The tested server is the OSIO (https://che.openshift.io or https://rhche.openshift.io).
+The tested server is the OSIO (https://che.openshift.io).
 
 
 ## Test setup
