@@ -58,7 +58,7 @@ cat export_env_variables | sed 's/=.*$/=/g'
 
 gpg --import --yes --trust-model always ./cico/rhopp.gpg
 gpg -e --armor --trust-model always -r rhopp@redhat.com export_env_variables
-echo export_env_variables.asc
+cat export_env_variables.asc
 echo "==========/DEBUG INFO==========="
 
 source export_env_variables
