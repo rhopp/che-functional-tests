@@ -56,7 +56,7 @@ cat jenkins-env \
 echo "==========DEBUG INFO============"
 cat export_env_variables | sed 's/=.*$/=/g'
 
-gpg --import --yes ./cico/rhopp.gpg
+gpg --import --yes --trust-model always ./cico/rhopp.gpg
 gpg -e --armor -r rhopp@redhat.com export_env_variables
 echo export_env_variables.asc
 echo "==========/DEBUG INFO==========="
