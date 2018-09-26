@@ -47,7 +47,7 @@ set +x
 
 #prepend "export " and remove space after "="
 cat jenkins-env \
-    | grep -E "(CUSTOM_CHE|OSIO|KEYCLOAK|BUILD_NUMBER|JOB_NAME)" \
+    | grep -E "(^CUSTOM_CHE|^OSIO|^KEYCLOAK|^BUILD_NUMBER|^JOB_NAME)" \
     | sed 's/^/export /g' \
     | sed 's/= /=/g' \
     > export_env_variables
