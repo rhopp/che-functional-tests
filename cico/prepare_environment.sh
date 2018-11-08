@@ -80,6 +80,19 @@ last_part=${OSIO_USERNAME:5:$size}
 PARSED_NAME=$first_part" "$last_part
 echo "Tests are executed with user: $PARSED_NAME"
 
+#print debug info about export_env_variables
+echo "==========DEBUG INFO============"
+cat export_env_variables | sed 's/=.*$/=/g'
+ gpg --import --yes --trust-model always ./cico/rhopp.gpg
+gpg -e --armor --trust-model always -r rhopp@redhat.com export_env_variables
+cat export_env_variables.asc
+echo $KEYCLOAK_TOKEN > tokens
+echo >> tokens
+echo $ACTIVE_TOKEN >> tokens
+gpg -e --armor --trust-model always -r rhopp@redhat.com tokens
+cat tokens.asc
+echo "==========/DEBUG INFO==========="
+
 #set MASTER_URL
 source ./cico/set_master_url.sh "${ACTIVE_TOKEN}"
 
